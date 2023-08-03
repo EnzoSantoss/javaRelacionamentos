@@ -1,5 +1,8 @@
 package com.relacionamentos.relcionamentosMysql.api.controller;
 
+import com.relacionamentos.relcionamentosMysql.api.dto.ProfessorResponse;
+import com.relacionamentos.relcionamentosMysql.api.dto.ProfessorSemDisciplinaResponse;
+import com.relacionamentos.relcionamentosMysql.api.dto.mapper.ProfessorMapper;
 import com.relacionamentos.relcionamentosMysql.domain.entity.Professor;
 import com.relacionamentos.relcionamentosMysql.domain.service.ProfessorService;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +18,14 @@ public class ProfessorController {
 
     private final ProfessorService professorService;
     @GetMapping()
-    public ResponseEntity<List<Professor>> getAllProfessores(){
+    public ResponseEntity<List<ProfessorResponse>> getAllProfessores(){
 
         List<Professor> allProfessor = professorService.getAllProfessor();
 
-        return ResponseEntity.status(200).body(allProfessor);
+        List<ProfessorResponse> response = ProfessorMapper.toProfessoresComDisciplinaList(allProfessor);
+
+
+        return ResponseEntity.status(200).body(response);
     }
 
     @PostMapping()
